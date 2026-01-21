@@ -13,26 +13,24 @@ const statusColors: Record<Issue['status'], string> = {
 
 export default function IssueCard({ issue }: IssueCardProps) {
   return (
-    <div className="border rounded-lg p-4 space-y-2 hover:shadow transition">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-lg">{issue.title}</h3>
-        <span
-          className={`text-xs px-2 py-1 rounded ${statusColors[issue.status]}`}
-        >
+    <div className="border rounded-lg shadow-sm p-4 bg-white hover:shadow-md transition flex flex-col justify-between h-full">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="font-semibold text-lg line-clamp-2">{issue.title}</h3>
+        <span className={`text-xs px-2 py-1 rounded ${statusColors[issue.status]}`}>
           {issue.status.replace('_', ' ')}
         </span>
       </div>
 
-      <p className="text-gray-600 text-sm line-clamp-2">
+      {/* Description */}
+      <p className="text-gray-600 text-sm line-clamp-3 mb-4">
         {issue.description}
       </p>
 
-      <div className="flex justify-between items-center text-xs text-gray-500">
+      {/* Footer */}
+      <div className="flex justify-between items-center text-xs text-gray-500 mt-auto">
         <span>Type: {issue.type}</span>
-        <Link
-          href={`/issues/${issue.id}`}
-          className="text-blue-600 hover:underline"
-        >
+        <Link href={`/issues/${issue.id}`} className="text-blue-600 hover:underline">
           View →
         </Link>
       </div>
