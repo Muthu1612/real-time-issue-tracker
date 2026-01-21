@@ -1,48 +1,24 @@
-import { getLatestIssues } from '@/features/issues/services';
+import { getDashboardData } from '@/features/dashboard/services';
 import LatestIssues from '@/features/issues/components/LatestIssues';
-import { mockIssues } from '@/features/issues/mocks';
+import StatusCard from '@/features/dashboard/components/StatusCard';
 
 export default async function DashboardPage() {
-  const issues = await getLatestIssues();
-
-  // Count issues by status
-  const statusCounts = {
-    OPEN: issues.filter((i) => i.status === 'OPEN').length,
-    IN_PROGRESS: issues.filter((i) => i.status === 'IN_PROGRESS').length,
-    CLOSED: issues.filter((i) => i.status === 'CLOSED').length,
-  };
+  const { statusCounts, latestIssues } = await getDashboardData();
 
   return (
     <main className="p-8 space-y-8 max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold">Dashboard</h1>
 
-      {/* Issue status summary */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 border rounded-lg text-center">
-          <h2 className="text-lg font-semibold">Open</h2>
-          <p className="text-2xl font-bold text-red-600">{statusCounts.OPEN}</p>
-        </div>
-        <div className="p-4 border rounded-lg text-center">
-          <h2 className="text-lg font-semibold">In Progress</h2>
-          <p className="text-2xl font-bold text-yellow-600">{statusCounts.IN_PROGRESS}</p>
-        </div>
-        <div className="p-4 border rounded-lg text-center">
-          <h2 className="text-lg font-semibold">Closed</h2>
-          <p className="text-2xl font-bold text-green-600">{statusCounts.CLOSED}</p>
-        </div>
+        <StatusCard label="Open" count={statusCounts.OPEN} color="red" />
+        <StatusCard label="In Progress" count={statusCounts.IN_PROGRESS} color="yellow" />
+        <StatusCard label="Closed" count={statusCounts.CLOSED} color="green" />
       </div>
 
-      {/* Latest issues */}
-      <div className="mt-8">
-        <LatestIssues issues={issues.slice(0, 6)} />
-      </div>
+      <LatestIssues issues={latestIssues} />
 
-      {/* Quick link to all issues */}
       <div className="mt-8">
-        <a
-          href="/issues"
-          className="text-blue-600 hover:underline text-lg"
-        >
+        <a href="/issues" className="text-blue-600 hover:underline text-lg">
           View All Issues →
         </a>
       </div>
