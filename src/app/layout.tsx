@@ -23,11 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-black`}
       >
-        {children}
+        <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-sapphire-950">
+          {children}
+        </div>
       </body>
     </html>
   );

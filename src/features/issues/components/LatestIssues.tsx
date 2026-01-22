@@ -9,8 +9,8 @@ interface LatestIssuesProps {
 export default function LatestIssues({ issues }: LatestIssuesProps) {
   return (
     <Card title="Latest Issues">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {issues.map((issue) => (
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {issues.slice(0, 6).map((issue) => (
           <IssueCard key={issue.id} issue={issue} />
         ))}
       </div>
