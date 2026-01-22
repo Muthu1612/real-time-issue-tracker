@@ -8,6 +8,9 @@ export class IssueRepository implements IIssueRepository {
 
   async findAll() {
     return this.prisma.issue.findMany({
+      where: {
+        deletedAt: null, // Only non-deleted issues
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -24,8 +27,11 @@ export class IssueRepository implements IIssueRepository {
   }
 
   async findById(id: number) {
-    return this.prisma.issue.findUnique({
-      where: { id },
+    return this.prisma.issue.findFirst({
+      where: {
+        id,
+        deletedAt: null, // Only if not deleted
+      },
       include: {
         assigned: {
           select: {
@@ -82,8 +88,12 @@ export class IssueRepository implements IIssueRepository {
   }
 
   async delete(id: number) {
-    await this.prisma.issue.delete({
+    // Soft delete - set deletedAt timestamp
+    await this.prisma.issue.update({
       where: { id },
+      data: {
+        deletedAt: new Date(),
+      },
     });
   }
 }
