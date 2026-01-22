@@ -18,7 +18,7 @@ model Issue {
   title       String
   description String?
   status      IssueStatus  @default(OPEN)
-  type        IssueType
+  type        String
   createdAt   DateTime     @default(now())
   assignedTo  Int?
   assigned    User?        @relation(fields: [assignedTo], references: [id])
