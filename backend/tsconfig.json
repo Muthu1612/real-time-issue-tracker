@@ -5,7 +5,6 @@
     "module": "CommonJS",
 
     // Project structure
-    "rootDir": "src",
     "outDir": "dist",
 
     // Type checking
@@ -25,6 +24,6 @@
     // Source maps for easier debugging
     "sourceMap": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "prisma.config.ts"],
   "exclude": ["node_modules", "dist"]
 }
