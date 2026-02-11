@@ -5,6 +5,8 @@ import { errorHandler } from "./middlewares/error.middleware";
 
 const app = express();
 
+// Slack sends form data, not JSON
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Routes
