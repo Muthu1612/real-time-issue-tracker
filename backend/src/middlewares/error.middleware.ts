@@ -1,6 +1,9 @@
 // Error handling middleware
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/errors";
+import { logger } from "../utils/logger";
+
+type RequestWithId = Request & { id?: string };
 
 export function errorHandler(
   err: Error,
@@ -9,6 +12,17 @@ export function errorHandler(
   next: NextFunction
 ) {
   if (err instanceof AppError) {
+    logger.warn(
+      {
+        err,
+        requestId: (req as RequestWithId).id,
+        method: req.method,
+        url: req.originalUrl,
+        statusCode: err.statusCode,
+      },
+      err.message
+    );
+
     return res.status(err.statusCode).json({
       success: false,
       message: err.message,
@@ -16,7 +30,15 @@ export function errorHandler(
   }
 
   // Log unexpected errors
-  console.error("Unexpected error:", err);
+  logger.error(
+    {
+      err,
+      requestId: (req as RequestWithId).id,
+      method: req.method,
+      url: req.originalUrl,
+    },
+    "Unexpected error"
+  );
 
   return res.status(500).json({
     success: false,

@@ -28,9 +28,16 @@ export class SlackAdapter {
       ? JSON.parse(req.body.payload)
       : req.body;
 
+    console.log("Received Slack payload:", payload);
+
     // Validate payload structure exists
     if (!payload || typeof payload !== "object") {
       throw new ValidationError("Invalid Slack webhook payload");
+    }
+
+    // Slack Events API URL verification handshake
+    if (payload.type === "url_verification" && payload.challenge) {
+      return res.status(200).json({ challenge: payload.challenge });
     }
 
     // Route to appropriate handler based on payload type
