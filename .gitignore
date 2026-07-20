@@ -1,0 +1,13 @@
+# Terraform and Terragrunt generated files
+/k8s/infra/live/local/.terragrunt-cache/
+/k8s/infra/live/local/.terraform/
+/k8s/infra/live/local/*.tfstate
+/k8s/infra/live/local/*.tfstate.*
+/k8s/infra/live/local/crash.log
+
+# Local Terraform state created by the shared Terragrunt backend config
+/k8s/infra/live/local/terraform.tfstate
+/k8s/infra/live/local/terraform.tfstate.backup
+
+# Keep generated provider binaries out of source control
+/k8s/infra/live/local/.terraform.lock.hcl

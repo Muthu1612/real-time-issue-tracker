@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: api
+  namespace: issue-tracker
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: ./k8s/apps/api/chart
+      sourceRef:
+        kind: GitRepository
+        name: real-time-issue-tracker
+        namespace: flux-system
+      reconcileStrategy: Revision
+  values:
+    image:
+      repository: real-time-issue-tracker/backend
+      tag: kind
+    env:
+      PORT: "4000"
