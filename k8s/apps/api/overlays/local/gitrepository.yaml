@@ -5,6 +5,6 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  url: https://github.com/<your-org>/real-time-issue-tracker.git
+  url: https://github.com/Muthu1612/real-time-issue-tracker.git
   ref:
-    branch: main
+    branch: feature/rewrite-in-go

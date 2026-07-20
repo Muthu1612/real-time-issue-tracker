@@ -4,14 +4,14 @@ terraform {
   backend "local" {}
 
   required_providers {
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 2.15"
-    }
-
     kubectl = {
       source  = "gavinbunney/kubectl"
       version = "~> 1.14"
+    }
+
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
     }
 
     kubernetes = {

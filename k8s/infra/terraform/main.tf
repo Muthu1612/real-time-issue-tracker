@@ -10,20 +10,22 @@ resource "kubernetes_namespace" "flux_system" {
   }
 }
 
-resource "helm_release" "flux2" {
-  name             = "flux2"
-  repository       = "https://fluxcd-community.github.io/helm-charts"
-  chart            = "flux2"
-  namespace        = kubernetes_namespace.flux_system.metadata[0].name
-  create_namespace = false
-  atomic           = true
-  cleanup_on_fail  = true
-  wait             = true
+resource "null_resource" "flux_install" {
+  triggers = {
+    version = "v2.9.1"
+  }
+
+  provisioner "local-exec" {
+    interpreter = ["PowerShell", "-Command"]
+    command     = "kubectl apply -f https://github.com/fluxcd/flux2/releases/download/v2.9.1/install.yaml"
+  }
 
   depends_on = [kubernetes_namespace.flux_system]
 }
 
 resource "kubectl_manifest" "git_repository" {
+  validate_schema = false
+
   yaml_body = <<-YAML
     apiVersion: source.toolkit.fluxcd.io/v1
     kind: GitRepository
@@ -37,10 +39,12 @@ resource "kubectl_manifest" "git_repository" {
         branch: ${var.git_repository_branch}
   YAML
 
-  depends_on = [helm_release.flux2]
+  depends_on = [null_resource.flux_install]
 }
 
 resource "kubectl_manifest" "app_kustomization" {
+  validate_schema = false
+
   yaml_body = <<-YAML
     apiVersion: kustomize.toolkit.fluxcd.io/v1
     kind: Kustomization
